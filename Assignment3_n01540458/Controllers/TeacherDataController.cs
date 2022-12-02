@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -119,6 +120,80 @@ namespace Assignment3_n01540458.Controllers
 
 
             return NewTeacher;
+        }
+
+        /// <summary>
+        /// Deletes a Teacher from the connected MySQL Database if the ID of that teacher exists.
+        /// </summary>
+        /// <param name="id">The ID of the teacher.</param>
+        /// <example>POST /api/TeacherData/DeleteTeacher/3</example>
+        [HttpPost]
+        public void DeleteTeacher(int id)
+        {
+            //Create an instance of a connection
+            MySqlConnection Conn = School.AccessDatabase();
+
+            //Open the connection between the web server and database
+            Conn.Open();
+
+            //Establish a new command (query) for our database
+            MySqlCommand cmd = Conn.CreateCommand();
+
+            //SQL QUERY
+            cmd.CommandText = "Delete from Teachers where teacherid=@id";
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
+
+            Conn.Close();
+
+
+        }
+
+        /// <summary>
+        /// Adds a Teacher to the MySQL Database.
+        /// </summary>
+        /// <param name="NewTeacher">An object with fields that map to the columns of the teachers's table.</param>
+        /// <example>
+        /// POST api/TeacherData/AddTeacher
+        /// FORM DATA / POST DATA / REQUEST BODY 
+        /// {
+        ///	"TeacherFname":"Sonia",
+        ///	"TeacherLname":"Tarik",
+        ///	"TeacherEmployeeNo":"EMP1234",
+        ///	"TeacherHiredate":"2022-11-30 10:10 AM"
+        ///	"TeacherSalary":"535.11"
+        /// }
+        /// </example>
+        [HttpPost]
+        //[EnableCors(origins: "*", methods: "*", headers: "*")]
+        public void AddTeacher([FromBody] Teacher NewTeacher)
+        {
+            //Create an instance of a connection
+            MySqlConnection Conn = School.AccessDatabase();
+
+            Debug.WriteLine(NewTeacher.TeacherFname);
+
+            //Open the connection between the web server and database
+            Conn.Open();
+
+            //Establish a new command (query) for our database
+            MySqlCommand cmd = Conn.CreateCommand();
+
+            //SQL QUERY
+            cmd.CommandText = "insert into teachers (teacherfname, teacherlname, employeenumber, hiredate, salary) values " + "(@TeacherFname,@TeacherLname,@TeacherEmployeeNo, @TeacherHiredate, @TeacherSalary)";
+            cmd.Parameters.AddWithValue("@TeacherFname", NewTeacher.TeacherFname);
+            cmd.Parameters.AddWithValue("@TeacherLname", NewTeacher.TeacherLname);
+            cmd.Parameters.AddWithValue("@TeacherEmployeeNo", NewTeacher.TeacherEmployeeNo);
+            cmd.Parameters.AddWithValue("@TeacherHiredate", NewTeacher.TeacherHiredate);
+            cmd.Parameters.AddWithValue("@TeacherSalary", NewTeacher.TeacherSalary);
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
+
+            Conn.Close();
+
         }
     }
 }

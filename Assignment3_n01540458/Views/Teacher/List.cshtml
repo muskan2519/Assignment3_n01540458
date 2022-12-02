@@ -4,7 +4,16 @@
 }
 
 <div id="containerlist">
+
+    <nav>
+        <a class="navlink" href="/Teacher/New">Add Teacher</a>
+    </nav>
+
     <h2>List of Teachers</h2>
+    <form action="/Teacher/List" method="GET">
+        <input type="text" name="SearchKey" autocomplete="off" />
+        <input type="submit" value="Search" />
+    </form>
     <p>Please click teacher names to view the details</p>
     @foreach (var teacher in Model)
     {

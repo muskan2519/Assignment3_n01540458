@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "New";
+}
+
+<!--
+    here i have added client side validation for this form.
+    All fields are mandatory to fill. If not, after clicking submit, the form will throw error.
+    Also, I have added validation for salary field, which can only take integers or decimal numbers. If not, form will throw error.
+    Also, I have added validation for employee number field, which can only take values starting from T adn 3 numbers (e.g. T123). If not, form will throw error.
+-->
+<div id="containershow">
+    <nav>
+        <a class="navlink" href="/Teacher/List">Back To Teachers</a>
+    </nav>
+    <h2>Fill the form to add new teacher.</h2>
+    <form method="POST" action="/Teacher/Create">
+        <div class="inputField">
+            <label for="TeacherFname">First Name:</label>
+            <input type="text" id="TeacherFname" name="TeacherFname" required />
+        </div>
+        <div class="inputField">
+            <label for="TeacherLname">Last Name:</label>
+            <input type="text" id="TeacherLname" name="TeacherLname" required />
+        </div>
+        <div class="inputField">
+            <label for="TeacherEmpNo">Employee No:</label>
+            <input type="text" id="TeacherEmpNo" pattern="[T][0-9]{3}" name="TeacherEmpNo" required />
+        </div>^[Ss][0-9]{4}$
+        <div class="inputField">
+            <label for="TeacherSalary">Salary:</label>
+            <input type="text" pattern="[0-9]+([\.][0-9]+)?" id="TeacherSalary" name="TeacherSalary" required />
+        </div>
+        <div class="inputField">
+            <input type="submit" value="Add Teacher" />
+        </div>
+    </form>
+</div>
+
